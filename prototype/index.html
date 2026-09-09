@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Streakly — Comeback</title>
+<style>
+  :root {
+    --orange: #FF6B35;
+    --orange-light: #FFF1EA;
+    --purple: #6C5CE7;
+    --green: #2ECC71;
+    --ice: #4FC3F7;
+    --ink: #2D2A32;
+    --muted: #8B8794;
+    --bg: #FAF9FC;
+    --card: #FFFFFF;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: #E9E7EF;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: var(--ink);
+  }
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 24px 12px;
+  }
+  .phone {
+    width: 375px;
+    max-width: 100%;
+    min-height: 720px;
+    background: var(--bg);
+    border-radius: 36px;
+    box-shadow: 0 20px 60px rgba(45, 42, 50, 0.25);
+    overflow: hidden;
+    position: relative;
+    border: 8px solid var(--ink);
+  }
+  .notch {
+    width: 120px;
+    height: 22px;
+    background: var(--ink);
+    border-radius: 0 0 16px 16px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 5;
+  }
+  .screen {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    min-height: 680px;
+    padding: 28px 24px 32px;
+    animation: fadeIn 0.35s ease;
+  }
+  .screen.active { display: flex; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Screen 1: Comeback */
+  .eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--purple);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  h1 {
+    font-size: 24px;
+    line-height: 1.3;
+    margin: 0 0 8px;
+  }
+  .sub {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0 0 20px;
+  }
+  .stat-card {
+    background: linear-gradient(135deg, var(--orange), #FF8C61);
+    border-radius: 20px;
+    padding: 20px;
+    color: white;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .stat-card .flame { font-size: 36px; }
+  .stat-card .num { font-size: 30px; font-weight: 800; line-height: 1; }
+  .stat-card .label { font-size: 13px; opacity: 0.9; margin-top: 2px; }
+  .best-row {
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--muted);
+    margin: -6px 0 16px 4px;
+  }
+  .best-row b { color: var(--ink); }
+  .lock-card {
+    background: var(--card);
+    border: 1.5px dashed #D8D4E2;
+    border-radius: 18px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .lock-card .icon {
+    width: 40px; height: 40px;
+    background: var(--orange-light);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    flex-shrink: 0;
+  }
+  .lock-card .text { font-size: 13.5px; color: var(--muted); line-height: 1.4; }
+  .lock-card .text b { color: var(--ink); }
+
+  .spacer { flex: 1; }
+
+  button {
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: var(--purple);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    padding: 16px;
+    border-radius: 16px;
+    width: 100%;
+    box-shadow: 0 8px 20px rgba(108, 92, 231, 0.35);
+    transition: transform 0.15s ease;
+  }
+  .btn-primary:active { transform: scale(0.97); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 12px;
+    width: 100%;
+    margin-top: 4px;
+  }
+
+  /* Screen 2: Lesson */
+  .lesson-header { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+  .lesson-badge {
+    background: var(--purple);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+  .timer {
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 600;
+    margin-left: auto;
+  }
+  .lesson-card {
+    background: var(--card);
+    border-radius: 22px;
+    padding: 28px 22px;
+    text-align: center;
+    box-shadow: 0 4px 16px rgba(45,42,50,0.06);
+    margin-bottom: 20px;
+  }
+  .lesson-card .flag { font-size: 40px; margin-bottom: 10px; }
+  .lesson-card .prompt { font-size: 14px; color: var(--muted); margin-bottom: 6px; }
+  .lesson-card .word { font-size: 28px; font-weight: 800; color: var(--ink); margin-bottom: 20px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option {
+    background: var(--orange-light);
+    border: 2px solid transparent;
+    border-radius: 14px;
+    padding: 14px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    text-align: left;
+    transition: all 0.15s ease;
+  }
+  .option:hover { border-color: var(--orange); }
+  .option.correct { background: #E4F9EC; border-color: var(--green); color: #1B8A45; }
+  .option.disabled { pointer-events: none; opacity: 0.5; }
+  .progress-track {
+    height: 8px;
+    background: #E9E7EF;
+    border-radius: 100px;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--orange);
+    width: 15%;
+    border-radius: 100px;
+    transition: width 0.5s ease;
+  }
+
+  /* Screen 3: Unlock */
+  .unlock-hero { text-align: center; margin-top: 20px; margin-bottom: 24px; }
+  .unlock-hero .big-emoji { font-size: 56px; margin-bottom: 10px; }
+  .freeze-card {
+    background: linear-gradient(135deg, var(--ice), #7FD8FF);
+    border-radius: 22px;
+    padding: 24px;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .freeze-card .icon { font-size: 40px; margin-bottom: 8px; }
+  .freeze-card h2 { font-size: 19px; margin: 0 0 6px; }
+  .freeze-card p { font-size: 14px; opacity: 0.95; margin: 0; line-height: 1.5; }
+  .btn-freeze {
+    background: white;
+    color: var(--ice);
+    font-size: 16px;
+    font-weight: 800;
+    padding: 16px;
+    border-radius: 16px;
+    width: 100%;
+    margin-top: 18px;
+  }
+
+  /* Screen 4: Restored */
+  .restored-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+  }
+  .restored-emoji { font-size: 64px; margin-bottom: 8px; animation: pop 0.5s ease; }
+  @keyframes pop {
+    0% { transform: scale(0.5); opacity: 0; }
+    70% { transform: scale(1.1); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .restored-count {
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--orange);
+    margin: 8px 0 4px;
+  }
+  .restored-label { font-size: 14px; color: var(--muted); margin-bottom: 20px; }
+  .restored-msg {
+    font-size: 15px;
+    color: var(--ink);
+    line-height: 1.6;
+    margin-bottom: 24px;
+    max-width: 280px;
+  }
+  .pill {
+    display: inline-block;
+    background: #E4F9EC;
+    color: #1B8A45;
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="notch"></div>
+
+  <!-- SCREEN 1: Comeback -->
+  <div class="screen active" id="screen-1">
+    <div class="eyebrow">Welcome back</div>
+    <h1>You built something real. Let's pick it back up.</h1>
+    <p class="sub">You missed a couple of days — that happens.</p>
+
+    <div class="stat-card">
+      <div class="flame">🔥</div>
+      <div>
+        <div class="num">12-day</div>
+        <div class="label">Here's where you left off</div>
+      </div>
+    </div>
+
+    <div class="best-row">💪 For inspiration — your longest streak ever: <b>18 days</b></div>
+
+    <div class="lock-card">
+      <div class="icon">🔓</div>
+      <div class="text">Finish a <b>60-second comeback lesson</b> and we'll unlock a one-tap <b>streak-freeze</b> to cover the days you missed. <b>Free, always</b> — no catch, no subscription.</div>
+    </div>
+
+    <div class="spacer"></div>
+    <button class="btn-primary" onclick="goTo(2)">Start 60-second comeback lesson</button>
+    <button class="btn-ghost" onclick="goTo(5)">Not now</button>
+  </div>
+
+  <!-- SCREEN 2: Lesson -->
+  <div class="screen" id="screen-2">
+    <div class="lesson-header">
+      <span class="lesson-badge">🇪🇸 Spanish</span>
+      <span class="timer" id="timer">0:60</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+
+    <div class="lesson-card">
+      <div class="flag">👋</div>
+      <div class="prompt">Welcome back! How do you say...</div>
+      <div class="word">"I'm back"</div>
+      <div class="options" id="options">
+        <button class="option" onclick="pick(this, false)">Lo siento</button>
+        <button class="option" onclick="pick(this, true)">Estoy de vuelta</button>
+        <button class="option" onclick="pick(this, false)">Buenas noches</button>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div>
+
+  <!-- SCREEN 3: Freeze unlock -->
+  <div class="screen" id="screen-3">
+    <div class="unlock-hero">
+      <div class="big-emoji">✅</div>
+      <h1 style="text-align:center;">Nice! Lesson complete.</h1>
+      <p class="sub" style="text-align:center;">You just picked up right where you left off.</p>
+    </div>
+
+    <div class="freeze-card">
+      <div class="icon">🧊</div>
+      <h2>Your streak-freeze is unlocked</h2>
+      <p>Use it now to cover the days you missed and pick up your 12-day streak — no penalty, and it's free.</p>
+    </div>
+
+    <div class="spacer"></div>
+    <button class="btn-freeze" onclick="goTo(4)">❄️ Freeze &amp; restore my streak</button>
+  </div>
+
+  <!-- SCREEN 4: Restored -->
+  <div class="screen" id="screen-4">
+    <div class="restored-wrap">
+      <div class="pill">Streak-freeze applied</div>
+      <div class="restored-emoji">🔥</div>
+      <div class="restored-count">12</div>
+      <div class="restored-label">days and counting</div>
+      <div class="restored-msg">Your missed days are covered. Come back tomorrow to keep it going — you're already most of the way to a new best.</div>
+      <button class="btn-primary" style="max-width:220px;" onclick="goTo(1)">Done</button>
+    </div>
+  </div>
+
+  <!-- SCREEN 5: Not now (exit) -->
+  <div class="screen" id="screen-5">
+    <div class="restored-wrap">
+      <div class="restored-emoji">👋</div>
+      <div class="restored-msg" style="max-width:260px;">No worries — no pressure.</div>
+      <div class="lock-card" style="text-align:left;">
+        <div class="icon">⏳</div>
+        <div class="text">Your streak-freeze offer stays available for the next <b>48 hours</b>. Come back anytime before then to pick up your 12-day streak.</div>
+      </div>
+      <button class="btn-primary" style="max-width:220px; margin-top:8px;" onclick="goTo(1)">Back to home</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function goTo(n) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen-' + n).classList.add('active');
+    if (n === 2) startLessonTimer();
+  }
+
+  function pick(el, isCorrect) {
+    document.querySelectorAll('#options .option').forEach(o => o.classList.add('disabled'));
+    if (isCorrect) {
+      el.classList.add('correct');
+    }
+    setTimeout(() => goTo(3), 700);
+  }
+
+  let timerInterval;
+  function startLessonTimer() {
+    let seconds = 60;
+    const timerEl = document.getElementById('timer');
+    const progressEl = document.getElementById('progress');
+    clearInterval(timerInterval);
+    timerInterval = setInterval(() => {
+      seconds--;
+      const m = Math.floor(seconds / 60);
+      const s = String(seconds % 60).padStart(2, '0');
+      timerEl.textContent = m + ':' + s;
+      progressEl.style.width = (100 - (seconds / 60) * 85) + '%';
+      if (seconds <= 0) clearInterval(timerInterval);
+    }, 1000);
+  }
+</script>
+
+</body>
+</html>
