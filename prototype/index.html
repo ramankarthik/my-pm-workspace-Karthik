@@ -196,7 +196,13 @@
   }
   .option:hover { border-color: var(--orange); }
   .option.correct { background: #E4F9EC; border-color: var(--green); color: #1B8A45; }
+  .option.incorrect { background: #FDEAEA; border-color: #D64545; animation: shake 0.3s ease; }
   .option.disabled { pointer-events: none; opacity: 0.5; }
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+  }
   .progress-track {
     height: 8px;
     background: #E9E7EF;
@@ -383,11 +389,14 @@
   }
 
   function pick(el, isCorrect) {
-    document.querySelectorAll('#options .option').forEach(o => o.classList.add('disabled'));
     if (isCorrect) {
+      document.querySelectorAll('#options .option').forEach(o => o.classList.add('disabled'));
       el.classList.add('correct');
+      setTimeout(() => goTo(3), 700);
+    } else {
+      el.classList.add('incorrect');
+      setTimeout(() => el.classList.remove('incorrect'), 500);
     }
-    setTimeout(() => goTo(3), 700);
   }
 
   let timerInterval;

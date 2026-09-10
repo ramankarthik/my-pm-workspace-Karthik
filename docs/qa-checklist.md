@@ -42,7 +42,7 @@ Screen-by-screen review against the 10 most important things to verify before si
 | 1 | "Not now" exits without silently routing into the lesson | 1 → 5 | **PASS** | `onclick="goTo(5)"` — confirmed fixed from the earlier usability-round bug. |
 | 2 | "Where you left off" (12-day) is visually and textually distinct from "best streak ever" (18-day) | 1 | **PASS** | Two separate elements (`.stat-card` vs. `.best-row`) with different labels — the earlier messaging confusion is resolved. |
 | 3 | Streak-freeze visually restores the count rather than showing a generic confirmation | 3 → 4 | **PASS (prototype scope only)** | Screen 4 shows "12" restored. Cannot verify this holds with real backend data — currently hardcoded. |
-| 4 | The comeback lesson requires a correct answer before unlocking the freeze | 2 | **FAIL** | `pick(el, isCorrect)` calls `goTo(3)` after 700ms regardless of `isCorrect` — **any option, right or wrong, unlocks the freeze.** This undermines the "earned, not given away" framing behind the lesson-gate (see `docs/design-review.md`) — if it can't be failed, it isn't really gating anything. |
+| 4 | The comeback lesson requires a correct answer before unlocking the freeze | 2 | **FIXED (was FAIL)** | `pick(el, isCorrect)` now only advances on the correct answer — a wrong pick shows a red "incorrect" shake state and stays on the lesson. Verified in-browser: wrong answer blocks, correct answer still proceeds. Fixed as part of the capstone review session. |
 | 5 | The 60-second timer has defined behavior at timeout | 2 | **Cannot be determined** | Timer counts down and stops at 0:00, but nothing forces navigation or blocks a late answer — unclear if a hard cutoff is intended or if "60 seconds" is just a soft framing device. Needs a product decision, not just a QA check. |
 | 6 | The freeze-offer expiration window is consistent with the defined spec | 5 | **FAIL** | Screen 5 states the offer "stays available for the next 48 hours" — but `docs/spec-readiness.md` only defines a **30-day cooldown after a freeze is used**, not a 48-hour window on the *initial* offer. This is either a real, undefined business rule or a leftover placeholder — either way it's currently unconfirmed and could show users an inaccurate promise. |
 | 7 | "Free, always" copy is accurate and durable | 1, 3 | **Cannot be determined** | Not a code-verifiable check — needs product/business confirmation that this claim won't become false if monetization changes later. |
@@ -53,8 +53,10 @@ Screen-by-screen review against the 10 most important things to verify before si
 ### Blocking vs. Known Issue
 
 **Blocks launch:**
-- **#4 — Lesson doesn't actually gate on a correct answer.** If the product intent (per the design review) is that the freeze is *earned*, a lesson that can't be failed doesn't do that. Either fix the gating logic or explicitly decide the lesson is participatory-only (not a pass/fail gate) — but this needs a decision, not a silent ship.
 - **#6 — Freeze-offer window copy is inconsistent with the defined spec.** Shipping a specific, user-facing promise ("48 hours") that isn't backed by an actual defined rule is a real risk — either the copy needs to change or the 48-hour rule needs to be confirmed and added to the spec.
+
+**Resolved since the original review:**
+- **#4 — Lesson gating.** Fixed — see row above. No longer blocking.
 
 **Can ship as known issues (log and follow up):**
 - #5 — Timer timeout behavior is ambiguous but low-severity; can be clarified post-launch.

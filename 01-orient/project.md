@@ -2,6 +2,8 @@
 
 *Draft PRD skeleton — starting point only, not a finished document.*
 
+> **Note:** This is the original Module 1 exercise artifact, kept as-is for the record. The **canonical, actively-maintained** `project.md`, `strategy.md`, and `change_log.md` live at the **repo root**, not here — see those for current state.
+
 ## Problem Statement
 
 Day-7 retention has dropped from 48% to 39% since the streak redesign shipped. The drop is sharpest among users who break their streak in week 1 — once a user misses two days in a row, churn is almost double. When a streak breaks, the app resets the counter to zero with no acknowledgment of prior progress, and the "you lost your streak" push notification has a harsh tone. Users appear to go passive because breaking a streak feels like failure, and there is no graceful way back in.

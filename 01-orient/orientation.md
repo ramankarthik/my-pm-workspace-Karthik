@@ -4,6 +4,8 @@
 
 Set up persistent memory so Claude Code knows your product and stops building blind. Run your first real session, learn the interview-first habit, and set up `CLAUDE.md` plus the three core files.
 
+> **Note:** The three core files (`project.md`, `strategy.md`, `change_log.md`) ended up living at the **repo root** as the project grew, not nested under `01-orient/`. The root versions are canonical and actively maintained — this file's own `project.md` below is the original exercise artifact, kept for the record only.
+
 ## project.md
 
 *What are we building and why?*
